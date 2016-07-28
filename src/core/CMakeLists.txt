@@ -1,10 +1,17 @@
-project(core)
+project(EDHCore)
 
-add_definitions(-D${PROJECT_NAME}_export)
+add_definitions(-D${PROJECT_NAME}_Export)
 
 set(target_h
+	config.hpp
+	connection.hpp
+	connections.hpp
 	Export.h
 	Object.h
+	Pimpl.h
+	PimplImpl.h
+	signal.hpp
+	signals.hpp
 )
 
 set(target_src
