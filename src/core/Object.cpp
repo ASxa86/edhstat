@@ -15,10 +15,6 @@ class Object::Impl
 		{
 		}
 
-		~Impl()
-		{
-		}
-
 		std::vector<std::unique_ptr<Object>> children;
 		Object* parent;
 		std::string id;

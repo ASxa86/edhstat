@@ -7,15 +7,23 @@ set(target_h
 	connection.hpp
 	connections.hpp
 	Export.h
+	Game.h
 	Object.h
 	Pimpl.h
 	PimplImpl.h
+	Player.h
+	Rules.h
 	signal.hpp
 	signals.hpp
+	Turn.h
 )
 
 set(target_src
+	Game.cpp
 	Object.cpp
+	Player.cpp
+	Rules.cpp
+	Turn.cpp
 )
 
 add_library(${PROJECT_NAME} SHARED ${target_h} ${target_src})
