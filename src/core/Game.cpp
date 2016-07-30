@@ -1,6 +1,8 @@
 #include <core/Game.h>
 #include <core/PimplImpl.h>
 
+#include <logger/Logger.h>
+
 using namespace edh::core;
 
 class Game::Impl

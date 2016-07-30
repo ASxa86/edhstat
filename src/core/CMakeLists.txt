@@ -28,6 +28,14 @@ set(target_src
 
 add_library(${PROJECT_NAME} SHARED ${target_h} ${target_src})
 
+add_dependencies(${PROJECT_NAME}
+	EDHLogger
+)
+
+target_link_libraries(${PROJECT_NAME}
+	EDHLogger
+)
+
 install(TARGETS ${PROJECT_NAME}
 	RUNTIME DESTINATION bin
 	LIBRARY DESTINATION lib

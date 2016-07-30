@@ -63,7 +63,12 @@ set(target_src
 
 add_library(${PROJECT_NAME} SHARED ${target_h} ${target_src})
 
+add_dependencies(${PROJECT_NAME}
+	EDHCore
+)
+
 target_link_libraries(${PROJECT_NAME}
+	EDHCore
 	Qt5::Widgets
 	Qt5::Gui
 )
