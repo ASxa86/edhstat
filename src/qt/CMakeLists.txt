@@ -54,10 +54,12 @@ add_definitions(-D${PROJECT_NAME}_Export)
 
 set(target_h
 	Export.h
+	PlayerWidget.h
 	Widget.h
 )
 
 set(target_src
+	PlayerWidget.cpp
 	Widget.cpp
 )
 
