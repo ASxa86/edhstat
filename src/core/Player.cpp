@@ -1,27 +1,8 @@
 #include <core/Player.h>
-#include <core/PimplImpl.h>
 
 using namespace edh::core;
 
-class Player::Impl
-{
-	public:
-		Impl() :
-			experienceCounters(0),
-			poisonCounters(0),
-			lifeTotal(0),
-			alive(true)
-		{
-		}
-
-		std::size_t experienceCounters;
-		std::size_t poisonCounters;
-		int lifeTotal;
-		bool alive;
-};
-
-Player::Player(const std::string& id) : Object(id),
-	pimpl()
+Player::Player() : lifeTotal{0}, poisonCounters{0}, experienceCounters{0}
 {
 }
 
@@ -29,42 +10,42 @@ Player::~Player()
 {
 }
 
+void Player::setName(const std::string& x)
+{
+	this->name = x;
+}
+
+std::string Player::getName() const
+{
+	return this->name;
+}
+
 void Player::setLifeTotal(int x)
 {
-	this->pimpl->lifeTotal = x;
+	this->lifeTotal = x;
 }
 
 int Player::getLifeTotal() const
 {
-	return this->pimpl->lifeTotal;
+	return this->lifeTotal;
 }
 
-void Player::setExperienceCounters(std::size_t x)
+void Player::setPoisonCounters(int x)
 {
-	this->pimpl->experienceCounters = x;
+	this->poisonCounters = x;
 }
 
-std::size_t Player::getExperienceCounters() const
+int Player::getPoisonCounters() const
 {
-	return this->pimpl->experienceCounters;
+	return this->poisonCounters;
 }
 
-void Player::setPoisonCounters(std::size_t x)
+void Player::setExperienceCounters(int x)
 {
-	this->pimpl->poisonCounters = x;
+	this->experienceCounters = x;
 }
 
-std::size_t Player::getPoisonCounters() const
+int Player::getExperienceCounters()
 {
-	return this->pimpl->poisonCounters;
-}
-
-void Player::setAlive(bool x)
-{
-	this->pimpl->alive = x;
-}
-
-bool Player::getAlive() const
-{
-	return this->pimpl->alive;
+	return this->experienceCounters;
 }

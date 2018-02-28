@@ -1,9 +1,8 @@
 #pragma once
 
-#include <logger/g2log.hpp>
-
-#include <logger/Export.h>
 #include <core/Pimpl.h>
+#include <logger/Export.h>
+#include <logger/g2log.hpp>
 
 /// Convenience macros for logger. If the internal logger is ever replaced, these
 /// macros will remain the same.
@@ -27,13 +26,13 @@ namespace edh
 		///
 		class EDHLOGGER_EXPORT Logger
 		{
-			public:
-				Logger(const std::string& prefix, const std::string& directory, bool consoleOutput = true);
-				~Logger();
+		public:
+			Logger(const std::string& prefix, const std::string& directory, bool consoleOutput = true);
+			~Logger();
 
-			private:
-				class Impl;
-				Pimpl<Impl> pimpl;
+		private:
+			class Impl;
+			Pimpl<Impl> pimpl;
 		};
 	}
 }

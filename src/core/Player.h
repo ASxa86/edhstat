@@ -1,6 +1,7 @@
 #pragma once
 
-#include <core/Object.h>
+#include <core/Export.h>
+#include <string>
 
 namespace edh
 {
@@ -9,48 +10,35 @@ namespace edh
 		///
 		///	\class Player
 		///
-		///	\brief This class represents a single player in a game of EDH/Commander and maintains the player's state in the game.
+		///	\brief This class represents and manages a player in a game of EDH.
 		///
-		///	\date July 28, 2016
+		///	\date February 27, 2018
 		///
 		///	\author Aaron Shelley
 		///
-		class EDHCORE_EXPORT Player : public Object
+		class EDHCORE_EXPORT Player
 		{
-			public:
-				Player(const std::string& id = "edh::core::Player");
-				~Player() override;
+		public:
+			Player();
+			~Player();
 
-				///
-				///	Set's the current life total of the player.
-				///
-				///	It is possible to have a negative life total and still be in the game.
-				///	Such as having a platinum angel in play.
-				///
-				void setLifeTotal(int x);
-				int getLifeTotal() const;
+			void setName(const std::string& x);
+			std::string getName() const;
 
-				void setExperienceCounters(std::size_t x);
-				std::size_t getExperienceCounters() const;
+			void setLifeTotal(int x);
+			int getLifeTotal() const;
 
-				void setPoisonCounters(std::size_t x);
-				std::size_t getPoisonCounters() const;
+			void setPoisonCounters(int x);
+			int getPoisonCounters() const;
 
-				///
-				///	Sets whether 'this' player is alive.
-				///	
-				///	A player is considered not alive when they have lost the game whether through life
-				///	reaching 0 or some other condition.
-				///
-				///	true - Alive and in the game
-				///	false - Dead and out of the game
-				///
-				void setAlive(bool x);
-				bool getAlive() const;
+			void setExperienceCounters(int x);
+			int getExperienceCounters();
 
-			private:
-				class Impl;
-				Pimpl<Impl> pimpl;
+		private:
+			std::string name;
+			int lifeTotal;
+			int poisonCounters;
+			int experienceCounters;
 		};
 	}
 }

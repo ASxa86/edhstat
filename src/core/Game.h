@@ -1,31 +1,36 @@
 #pragma once
 
-#include <core/Object.h>
+#include <core/Export.h>
+#include <vector>
 
 namespace edh
 {
 	namespace core
 	{
+		class Player;
+
 		///
 		///	\class Game
 		///
-		///	\brief This class maintains the state of the entire game.
+		///	\brief This class represents and manages a single game of EDH.
 		///
-		///	This class will manage the game's clock among other states
+		///	A game of magic consists of multiple players playing multiple turns until someone is declared a winner.
 		///
-		///	\date July 28, 2016
+		///	\date February 27, 2018
 		///
-		///	\author Aaron Shelley
+		///	\authro Aaron Shelley
 		///
-		class EDHCORE_EXPORT Game : public Object
+		class EDHCORE_EXPORT Game
 		{
-			public:
-				Game(const std::string& id = "edh::core::Game");
-				~Game() override;
+		public:
+			Game();
+			~Game();
 
-			private:
-				class Impl;
-				Pimpl<Impl> pimpl;
+			void addPlayer(const Player& x);
+			const std::vector<Player>& getPlayers() const;
+
+		private:
+			std::vector<Player> players;
 		};
 	}
 }

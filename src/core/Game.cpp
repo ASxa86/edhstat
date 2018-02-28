@@ -1,23 +1,21 @@
 #include <core/Game.h>
-#include <core/PimplImpl.h>
-
-#include <logger/Logger.h>
 
 using namespace edh::core;
 
-class Game::Impl
-{
-	public:
-		Impl()
-		{
-		}
-};
-
-Game::Game(const std::string& id) : Object(id),
-	pimpl()
+Game::Game()
 {
 }
 
 Game::~Game()
 {
+}
+
+void Game::addPlayer(const Player& x)
+{
+	this->players.push_back(x);
+}
+
+const std::vector<Player>& Game::getPlayers() const
+{
+	return this->players;
 }
