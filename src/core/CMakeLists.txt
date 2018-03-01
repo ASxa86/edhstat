@@ -9,10 +9,16 @@ target_sources(EDHCore
 		Player.h
 		Pimpl.h
 		PimplImpl.h
+		Round.h
+		PlayerTurn.h
+		TurnAction.h
 )
 
 target_sources(EDHCore
 	PRIVATE
 		Game.cpp
 		Player.cpp
+		Round.cpp
+		PlayerTurn.cpp
+		TurnAction.cpp
 )

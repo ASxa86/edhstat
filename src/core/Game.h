@@ -8,6 +8,7 @@ namespace edh
 	namespace core
 	{
 		class Player;
+		class Round;
 
 		///
 		///	\class Game
@@ -29,8 +30,12 @@ namespace edh
 			void addPlayer(const Player& x);
 			const std::vector<Player>& getPlayers() const;
 
+			void addRound(const Round& x);
+			const std::vector<Round>& getRounds() const;
+
 		private:
 			std::vector<Player> players;
+			std::vector<Round> rounds;
 		};
 	}
 }
