@@ -27,3 +27,13 @@ const std::vector<TurnAction>& PlayerTurn::getTurnAction() const
 {
 	return this->turnActions;
 }
+
+void PlayerTurn::setTime(std::chrono::duration<double> x)
+{
+	this->time = x;
+}
+
+std::chrono::duration<double> PlayerTurn::getTime() const
+{
+	return this->time;
+}

@@ -27,8 +27,18 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR}/cmake)
 
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src)
-
 include_directories(${CMAKE_SOURCE_DIR}/src)
+
+#####################################################
+#
+#	Find Qt5
+#
+
+# Find includes in corresponding build directories
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
+# Instruct CMake to run moc automatically when needed.
+set(CMAKE_AUTOMOC ON)
+
+find_package(Qt5 COMPONENTS Core Gui Widgets)
 
 add_subdirectory(src)

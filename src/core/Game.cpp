@@ -19,7 +19,7 @@ void Game::addPlayer(const Player& x)
 	this->players.push_back(x);
 }
 
-const std::vector<Player>& Game::getPlayers() const
+std::vector<Player>& Game::getPlayers()
 {
 	return this->players;
 }
@@ -29,7 +29,17 @@ void Game::addRound(const Round& x)
 	this->rounds.push_back(x);
 }
 
-const std::vector<Round>& Game::getRounds() const
+std::vector<Round>& Game::getRounds()
 {
 	return this->rounds;
+}
+
+void Game::setTime(std::chrono::duration<double> x)
+{
+	this->time = x;
+}
+
+std::chrono::duration<double> Game::getTime() const
+{
+	return this->time;
 }

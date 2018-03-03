@@ -19,7 +19,7 @@ namespace edh
 		class EDHCORE_EXPORT Player
 		{
 		public:
-			Player();
+			Player(const std::string& x = std::string());
 			~Player();
 
 			void setName(const std::string& x);

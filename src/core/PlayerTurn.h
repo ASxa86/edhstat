@@ -1,6 +1,7 @@
 #pragma once
 
 #include <core/Export.h>
+#include <chrono>
 #include <functional>
 #include <vector>
 
@@ -35,9 +36,13 @@ namespace edh
 			void addTurnAction(const TurnAction& x);
 			const std::vector<TurnAction>& getTurnAction() const;
 
+			void setTime(std::chrono::duration<double> x);
+			std::chrono::duration<double> getTime() const;
+
 		private:
 			std::vector<TurnAction> turnActions;
 			std::reference_wrapper<const Player> player;
+			std::chrono::duration<double> time;
 		};
 	}
 }
