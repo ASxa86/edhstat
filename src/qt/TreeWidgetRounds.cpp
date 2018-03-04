@@ -6,6 +6,7 @@
 #include <core/PlayerTurn.h>
 #include <core/Round.h>
 #include <core/TurnAction.h>
+#include <qt/DelegateTurnActionType.h>
 
 using namespace edh::core;
 using namespace edh::qt;
@@ -44,6 +45,8 @@ TreeWidgetRounds::TreeWidgetRounds(QWidget* parent) : QTreeWidget(parent)
 	this->setColumnCount(Impl::Column::Count);
 	this->setSelectionBehavior(QAbstractItemView::SelectionBehavior::SelectItems);
 	this->setEditTriggers(QAbstractItemView::EditTrigger::AnyKeyPressed | QAbstractItemView::EditTrigger::DoubleClicked);
+
+	this->setItemDelegateForColumn(Impl::Column::ActionType, new DelegateTurnActionType());
 
 	QStringList header;
 	header << "Round";
