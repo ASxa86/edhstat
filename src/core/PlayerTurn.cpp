@@ -23,7 +23,7 @@ void PlayerTurn::addTurnAction(const std::shared_ptr<TurnAction>& x)
 	this->turnActions.push_back(x);
 }
 
-std::vector<std::shared_ptr<TurnAction>> PlayerTurn::getTurnAction() const
+std::vector<std::shared_ptr<TurnAction>> PlayerTurn::getTurnActions() const
 {
 	return this->turnActions;
 }

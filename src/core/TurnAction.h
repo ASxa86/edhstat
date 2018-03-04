@@ -1,6 +1,7 @@
 #pragma once
 
 #include <core/Export.h>
+#include <sstream>
 #include <functional>
 
 namespace edh
@@ -78,5 +79,8 @@ namespace edh
 			int count;
 			Type type;
 		};
+
+		EDHCORE_EXPORT std::ostream& operator<<(std::ostream& os, TurnAction::Type type);
+		EDHCORE_EXPORT std::string ToString(TurnAction::Type type);
 	}
 }

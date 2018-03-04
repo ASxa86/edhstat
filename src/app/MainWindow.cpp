@@ -6,6 +6,7 @@
 #include <core/Round.h>
 #include <core/TurnAction.h>
 #include <core/PimplImpl.h>
+#include <qt/TreeWidgetRounds.h>
 #include <qt/WidgetPlayers.h>
 #include <QtWidgets/QBoxLayout>
 
@@ -43,9 +44,19 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent)
 	this->initializeMenuFile();
 	this->initializeMenuEdit();
 
+	auto centralWidget = new QWidget();
+	auto layout = new QVBoxLayout(centralWidget);
+	layout->setMargin(0);
+
 	auto wPlayers = new WidgetPlayers();
 	wPlayers->setGame(this->pimpl->game);
-	this->setCentralWidget(wPlayers);
+	layout->addWidget(wPlayers);
+
+	auto wRounds = new TreeWidgetRounds();
+	wRounds->setGame(this->pimpl->game);
+	layout->addWidget(wRounds);
+
+	this->setCentralWidget(centralWidget);
 }
 
 MainWindow::~MainWindow()
