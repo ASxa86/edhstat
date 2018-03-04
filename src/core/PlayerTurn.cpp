@@ -5,7 +5,7 @@
 
 using namespace edh::core;
 
-PlayerTurn::PlayerTurn(const Player& x) : player{x}
+PlayerTurn::PlayerTurn(const std::shared_ptr<Player>& x) : player{x}
 {
 }
 
@@ -13,17 +13,17 @@ PlayerTurn::~PlayerTurn()
 {
 }
 
-const Player& PlayerTurn::getPlayer() const
+std::shared_ptr<Player> PlayerTurn::getPlayer() const
 {
-	return this->player;
+	return this->player.lock();
 }
 
-void PlayerTurn::addTurnAction(const TurnAction& x)
+void PlayerTurn::addTurnAction(const std::shared_ptr<TurnAction>& x)
 {
 	this->turnActions.push_back(x);
 }
 
-const std::vector<TurnAction>& PlayerTurn::getTurnAction() const
+std::vector<std::shared_ptr<TurnAction>> PlayerTurn::getTurnAction() const
 {
 	return this->turnActions;
 }

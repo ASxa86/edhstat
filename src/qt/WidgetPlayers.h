@@ -21,7 +21,7 @@ namespace edh
 			WidgetPlayers(QWidget* parent = nullptr);
 			~WidgetPlayers();
 
-			void setGame(edh::core::Game* x);
+			void setGame(const std::shared_ptr<edh::core::Game>& x);
 
 		private:
 			struct Impl;

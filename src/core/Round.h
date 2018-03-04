@@ -1,6 +1,7 @@
 #pragma once
 
 #include <core/Export.h>
+#include <memory>
 #include <vector>
 
 namespace edh
@@ -27,11 +28,11 @@ namespace edh
 			Round();
 			~Round();
 
-			void addPlayerTurn(const PlayerTurn& x);
-			const std::vector<PlayerTurn>& getPlayerTurns() const;
+			void addPlayerTurn(const std::shared_ptr<PlayerTurn>& x);
+			std::vector<std::shared_ptr<PlayerTurn>> getPlayerTurns() const;
 
 		private:
-			std::vector<PlayerTurn> playerTurns;
+			std::vector<std::shared_ptr<PlayerTurn>> playerTurns;
 		};
 	}
 }

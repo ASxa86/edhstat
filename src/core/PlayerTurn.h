@@ -3,6 +3,7 @@
 #include <core/Export.h>
 #include <chrono>
 #include <functional>
+#include <memory>
 #include <vector>
 
 namespace edh
@@ -25,23 +26,23 @@ namespace edh
 		{
 		public:
 			PlayerTurn() = delete;
-			PlayerTurn(const Player& x);
+			PlayerTurn(const std::shared_ptr<Player>& x);
 			~PlayerTurn();
 
 			///
 			///	\brief Return the player for which this turn belongs to.
 			///
-			const Player& getPlayer() const;
+			std::shared_ptr<Player> getPlayer() const;
 
-			void addTurnAction(const TurnAction& x);
-			const std::vector<TurnAction>& getTurnAction() const;
+			void addTurnAction(const std::shared_ptr<TurnAction>& x);
+			std::vector<std::shared_ptr<TurnAction>> getTurnAction() const;
 
 			void setTime(std::chrono::duration<double> x);
 			std::chrono::duration<double> getTime() const;
 
 		private:
-			std::vector<TurnAction> turnActions;
-			std::reference_wrapper<const Player> player;
+			std::vector<std::shared_ptr<TurnAction>> turnActions;
+			std::weak_ptr<Player> player;
 			std::chrono::duration<double> time;
 		};
 	}

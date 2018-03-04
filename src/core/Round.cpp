@@ -13,12 +13,12 @@ Round::~Round()
 {
 }
 
-void Round::addPlayerTurn(const PlayerTurn& x)
+void Round::addPlayerTurn(const std::shared_ptr<PlayerTurn>& x)
 {
-	this->playerTurns.emplace_back(std::move(x));
+	this->playerTurns.emplace_back(x);
 }
 
-const std::vector<PlayerTurn>& Round::getPlayerTurns() const
+std::vector<std::shared_ptr<PlayerTurn>> Round::getPlayerTurns() const
 {
 	return this->playerTurns;
 }

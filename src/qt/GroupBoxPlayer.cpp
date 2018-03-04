@@ -12,7 +12,7 @@ using namespace edh::qt;
 struct GroupBoxPlayer::Impl
 {
 	QLabel* lblLifeTotal{nullptr};
-	Player* player{nullptr};
+	std::weak_ptr<Player> player{};
 };
 
 GroupBoxPlayer::GroupBoxPlayer(QWidget* parent) : QGroupBox(parent)
@@ -38,13 +38,14 @@ GroupBoxPlayer::GroupBoxPlayer(QWidget* parent) : QGroupBox(parent)
 	layout->addWidget(btnPlusFive, 3, 1);
 
 	const auto adjustLifeTotal = [this](int x) {
-
-		if(this->pimpl->player != nullptr)
+		const auto player = this->pimpl->player.lock();
+		
+		if(player != nullptr)
 		{
-			const auto lifeTotal = this->pimpl->player->getLifeTotal();
-			this->pimpl->player->setLifeTotal(lifeTotal + x);
+			const auto lifeTotal = player->getLifeTotal();
+			player->setLifeTotal(lifeTotal + x);
 
-			this->pimpl->lblLifeTotal->setText(QString::number(this->pimpl->player->getLifeTotal()));
+			this->pimpl->lblLifeTotal->setText(QString::number(player->getLifeTotal()));
 		}
 	};
 
@@ -69,13 +70,13 @@ GroupBoxPlayer::~GroupBoxPlayer()
 {
 }
 
-void GroupBoxPlayer::setPlayer(edh::core::Player* x)
+void GroupBoxPlayer::setPlayer(const std::shared_ptr<edh::core::Player>& x)
 {
 	this->pimpl->player = x;
 
-	if(this->pimpl->player != nullptr)
+	if(x != nullptr)
 	{
-		this->setTitle(QString::fromStdString(this->pimpl->player->getName()));
-		this->pimpl->lblLifeTotal->setText(QString::number(this->pimpl->player->getLifeTotal()));
+		this->setTitle(QString::fromStdString(x->getName()));
+		this->pimpl->lblLifeTotal->setText(QString::number(x->getLifeTotal()));
 	}
 }

@@ -30,7 +30,7 @@ namespace edh
 			GroupBoxPlayer(QWidget* parent = nullptr);
 			~GroupBoxPlayer();
 
-			void setPlayer(edh::core::Player*  x);
+			void setPlayer(const std::shared_ptr<edh::core::Player>&  x);
 
 		protected:
 		private:

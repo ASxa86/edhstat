@@ -46,7 +46,7 @@ namespace edh
 			///
 			///	\param x The player performing the action. Defaults the targeted player to the same player.
 			///
-			TurnAction(const Player& x);
+			TurnAction(const std::shared_ptr<Player>& x);
 			~TurnAction();
 
 			///
@@ -64,17 +64,17 @@ namespace edh
 			///
 			///	\brief Get the player performing this action.
 			///
-			const Player& getPlayer() const;
+			std::shared_ptr<Player> getPlayer() const;
 
 			///
 			///	\brief Set the target of this action.
 			///
-			void setTarget(const Player& x);
-			const Player& getTarget() const;
+			void setTarget(const std::shared_ptr<Player>& x);
+			std::shared_ptr<Player> getTarget() const;
 
 		private:
-			std::reference_wrapper<const Player> player;
-			std::reference_wrapper<const Player> target;
+			std::weak_ptr<Player> player;
+			std::weak_ptr<Player> target;
 			int count;
 			Type type;
 		};

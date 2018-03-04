@@ -12,7 +12,7 @@ using namespace edh::qt;
 struct WidgetPlayers::Impl
 {
 	QHBoxLayout* layout{nullptr};
-	Game* game{nullptr};
+	std::weak_ptr<Game> game{};
 };
 
 WidgetPlayers::WidgetPlayers(QWidget* parent) : QWidget(parent)
@@ -25,28 +25,19 @@ WidgetPlayers::~WidgetPlayers()
 {
 }
 
-void WidgetPlayers::setGame(Game* x)
+void WidgetPlayers::setGame(const std::shared_ptr<Game>& x)
 {
 	this->pimpl->game = x;
 
-	if(this->pimpl->game != nullptr)
+	if(x != nullptr)
 	{
-		auto& players = this->pimpl->game->getPlayers();
+		auto players = x->getPlayers();
 
-		for(auto& player : players)
+		for(const auto& player : players)
 		{
 			auto grpPlayer = new GroupBoxPlayer();
-			grpPlayer->setPlayer(&player);
+			grpPlayer->setPlayer(player);
 			this->pimpl->layout->addWidget(grpPlayer);
-		}
-
-		if(players.empty() == true)
-		{
-			this->pimpl->game->addPlayer(Player("Aaron"));
-			this->pimpl->game->addPlayer(Player("Ross"));
-			this->pimpl->game->addPlayer(Player("Lee"));
-			this->pimpl->game->addPlayer(Player("Jason"));
-			this->setGame(this->pimpl->game);
 		}
 	}
 }

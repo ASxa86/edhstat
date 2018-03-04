@@ -4,7 +4,7 @@
 
 using namespace edh::core;
 
-TurnAction::TurnAction(const Player& x) : player{x}, target{x}
+TurnAction::TurnAction(const std::shared_ptr<Player>& x) : player{x}, target{x}
 {
 }
 
@@ -32,17 +32,17 @@ int TurnAction::getCount() const
 	return this->count;
 }
 
-const Player& TurnAction::getPlayer() const
+std::shared_ptr<Player> TurnAction::getPlayer() const
 {
-	return this->player;
+	return this->player.lock();
 }
 
-void TurnAction::setTarget(const Player& x)
+void TurnAction::setTarget(const std::shared_ptr<Player>& x)
 {
 	this->target = x;
 }
 
-const Player& TurnAction::getTarget() const
+std::shared_ptr<Player> TurnAction::getTarget() const
 {
-	return this->target;
+	return this->target.lock();
 }

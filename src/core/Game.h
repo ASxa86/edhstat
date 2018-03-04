@@ -1,6 +1,7 @@
 #pragma once
 
 #include <core/Export.h>
+#include <memory>
 #include <chrono>
 #include <vector>
 
@@ -28,18 +29,18 @@ namespace edh
 			Game();
 			~Game();
 
-			void addPlayer(const Player& x);
-			std::vector<Player>& getPlayers();
+			void addPlayer(const std::shared_ptr<Player>& x);
+			std::vector<std::shared_ptr<Player>> getPlayers() const;
 
-			void addRound(const Round& x);
-			std::vector<Round>& getRounds();
+			void addRound(const std::shared_ptr<Round>& x);
+			std::vector<std::shared_ptr<Round>> getRounds() const;
 
 			void setTime(std::chrono::duration<double> x);
 			std::chrono::duration<double> getTime() const;
 
 		private:
-			std::vector<Player> players;
-			std::vector<Round> rounds;
+			std::vector<std::shared_ptr<Player>> players;
+			std::vector<std::shared_ptr<Round>> rounds;
 			std::chrono::duration<double> time;
 		};
 	}
