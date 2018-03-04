@@ -5,6 +5,8 @@ add_library(${PROJECT_NAME} SHARED "")
 target_compile_definitions(${PROJECT_NAME} PRIVATE -D${PROJECT_NAME}_Export)
 
 target_sources(${PROJECT_NAME} PRIVATE
+	ComboBoxPlayer.h
+	DelegatePlayer.h
 	DelegateTurnActionType.h
 	ComboBoxTurnActionType.h
 	Export.h
@@ -14,6 +16,8 @@ target_sources(${PROJECT_NAME} PRIVATE
 )
 
 target_sources(${PROJECT_NAME} PRIVATE
+	ComboBoxPlayer.cpp
+	DelegatePlayer.cpp
 	DelegateTurnActionType.cpp
 	ComboBoxTurnActionType.cpp
 	GroupBoxPlayer.cpp

@@ -6,12 +6,15 @@
 #include <core/PlayerTurn.h>
 #include <core/Round.h>
 #include <core/TurnAction.h>
+#include <qt/DelegatePlayer.h>
 #include <qt/DelegateTurnActionType.h>
+#include <QtWidgets/QHeaderView>
 
 using namespace edh::core;
 using namespace edh::qt;
 
 Q_DECLARE_METATYPE(std::weak_ptr<edh::core::Round>)
+Q_DECLARE_METATYPE(std::weak_ptr<edh::core::Player>)
 Q_DECLARE_METATYPE(std::weak_ptr<edh::core::PlayerTurn>)
 Q_DECLARE_METATYPE(std::weak_ptr<edh::core::TurnAction>)
 
@@ -34,19 +37,23 @@ struct TreeWidgetRounds::Impl
 	};
 
 	std::weak_ptr<Game> game;
+	DelegatePlayer* dlgPlayer{new DelegatePlayer()};
 };
 
 TreeWidgetRounds::TreeWidgetRounds(QWidget* parent) : QTreeWidget(parent)
 {
 	qRegisterMetaType<std::weak_ptr<edh::core::Round>>();
+	qRegisterMetaType<std::weak_ptr<edh::core::Player>>();
 	qRegisterMetaType<std::weak_ptr<edh::core::PlayerTurn>>();
 	qRegisterMetaType<std::weak_ptr<edh::core::TurnAction>>();
 
 	this->setColumnCount(Impl::Column::Count);
 	this->setSelectionBehavior(QAbstractItemView::SelectionBehavior::SelectItems);
 	this->setEditTriggers(QAbstractItemView::EditTrigger::AnyKeyPressed | QAbstractItemView::EditTrigger::DoubleClicked);
+	this->header()->setStretchLastSection(false);
 
 	this->setItemDelegateForColumn(Impl::Column::ActionType, new DelegateTurnActionType());
+	this->setItemDelegateForColumn(Impl::Column::Target, this->pimpl->dlgPlayer);
 
 	QStringList header;
 	header << "Round";
@@ -101,6 +108,8 @@ void TreeWidgetRounds::setGame(const std::shared_ptr<Game>& x)
 
 	if(x != nullptr)
 	{
+		this->pimpl->dlgPlayer->setGame(x);
+
 		const auto rounds = x->getRounds();
 
 		auto count = 0;
@@ -117,7 +126,7 @@ void TreeWidgetRounds::setGame(const std::shared_ptr<Game>& x)
 			for(const auto& turn : turns)
 			{
 				auto turnItem = new QTreeWidgetItem(Impl::ItemType::Turn);
-				turnItem->setText(Impl::Column::Name, QString::fromStdString(turn->getPlayer()->getName()));
+				turnItem->setText(Impl::Column::Name, QString::fromStdString("Turn - " + turn->getPlayer()->getName()));
 				std::weak_ptr<PlayerTurn> weakTurn = turn;
 				turnItem->setData(0, Qt::UserRole, QVariant::fromValue(weakTurn));
 
@@ -129,6 +138,9 @@ void TreeWidgetRounds::setGame(const std::shared_ptr<Game>& x)
 					actionItem->setData(Impl::Column::ActionCount, Qt::DisplayRole, action->getCount());
 					actionItem->setData(Impl::Column::ActionType, Qt::UserRole, static_cast<int>(action->getType()));
 					actionItem->setData(Impl::Column::ActionType, Qt::DisplayRole, QString::fromStdString(ToString(action->getType())));
+
+					std::weak_ptr<Player> weakPlayer = action->getTarget();
+					actionItem->setData(Impl::Column::Target, Qt::UserRole, QVariant::fromValue(weakPlayer));
 					actionItem->setData(Impl::Column::Target, Qt::DisplayRole, QString::fromStdString(action->getTarget()->getName()));
 					std::weak_ptr<TurnAction> weakAction = action;
 					actionItem->setData(0, Qt::UserRole, QVariant::fromValue(weakAction));
