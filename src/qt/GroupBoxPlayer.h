@@ -13,6 +13,8 @@ namespace edh
 
 	namespace qt
 	{
+		class GroupBoxGroup;
+
 		///
 		///	\class WidgetPlayer
 		///
@@ -32,8 +34,15 @@ namespace edh
 
 			void setPlayer(const std::shared_ptr<edh::core::Player>&  x);
 
+			void setChecked(bool x);
+
 		protected:
+			void mouseReleaseEvent(QMouseEvent* event) override;
+
 		private:
+			friend class GroupBoxGroup;
+			void setGroupBoxGroup(GroupBoxGroup* x);
+
 			struct Impl;
 			Pimpl<Impl> pimpl;
 		};
