@@ -28,7 +28,21 @@ namespace edh
 			Round();
 			~Round();
 
+			///
+			///	Adds a new turn to the round.
+			///	This effectively sets the current turn.
+			///
 			void addPlayerTurn(const std::shared_ptr<PlayerTurn>& x);
+
+			///
+			///	Get the current turn for the round.
+			///	This is the latest turn that has been added to the round.
+			///
+			std::shared_ptr<PlayerTurn> getCurrentTurn() const;
+
+			///
+			///	Retreive the list of turns for this round.
+			///
 			std::vector<std::shared_ptr<PlayerTurn>> getPlayerTurns() const;
 
 		private:

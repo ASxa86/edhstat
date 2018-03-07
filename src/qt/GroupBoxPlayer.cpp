@@ -126,7 +126,7 @@ void GroupBoxPlayer::mouseReleaseEvent(QMouseEvent* event)
 {
 	if(event->button() == Qt::MouseButton::LeftButton)
 	{
-		this->setChecked(!this->pimpl->toggled);
+		 this->setChecked(!this->pimpl->toggled);
 	}
 }
 

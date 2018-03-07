@@ -2,7 +2,7 @@
 
 using namespace edh::core;
 
-Player::Player(const std::string& x) : name{x}, lifeTotal{0}, poisonCounters{0}, experienceCounters{0}
+Player::Player(const std::string& x) : name{x}, lifeTotal{40}, poisonCounters{0}, experienceCounters{0}
 {
 }
 

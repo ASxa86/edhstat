@@ -41,4 +41,21 @@ set(CMAKE_AUTOMOC ON)
 
 find_package(Qt5 COMPONENTS Core Gui Widgets)
 
+get_target_property(Qt5CoreLocation Qt5::Core LOCATION)
+get_target_property(Qt5GuiLocation Qt5::Gui LOCATION)
+get_target_property(Qt5WidgetsLocation Qt5::Widgets LOCATION)
+file(INSTALL ${Qt5CoreLocation} DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/Release)
+file(INSTALL ${Qt5GuiLocation} DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/Release)
+file(INSTALL ${Qt5WidgetsLocation} DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/Release)
+file(INSTALL ${Qt5CoreLocation} DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/RelWithDebInfo)
+file(INSTALL ${Qt5GuiLocation} DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/RelWithDebInfo)
+file(INSTALL ${Qt5WidgetsLocation} DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/RelWithDebInfo)
+
+get_target_property(Qt5CoreLocationD Qt5::Core IMPORTED_LOCATION_DEBUG)
+get_target_property(Qt5GuiLocationD Qt5::Gui IMPORTED_LOCATION_DEBUG)
+get_target_property(Qt5WidgetsLocationD Qt5::Widgets IMPORTED_LOCATION_DEBUG)
+file(INSTALL ${Qt5CoreLocationD} DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/Debug)
+file(INSTALL ${Qt5GuiLocationD} DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/Debug)
+file(INSTALL ${Qt5WidgetsLocationD} DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/Debug)
+
 add_subdirectory(src)

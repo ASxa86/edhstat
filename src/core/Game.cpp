@@ -19,6 +19,16 @@ void Game::addPlayer(const std::shared_ptr<Player>& x)
 	this->players.push_back(x);
 }
 
+void Game::insertPlayer(size_t index, const std::shared_ptr<Player>& x)
+{
+	this->players.insert(std::begin(this->players) + index, x);
+}
+
+void Game::removePlayer(const std::shared_ptr<Player>& x)
+{
+	this->players.erase(std::find(std::begin(this->players), std::end(this->players), x), std::end(this->players));
+}
+
 std::vector<std::shared_ptr<Player>> Game::getPlayers() const
 {
 	return this->players;

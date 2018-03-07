@@ -30,6 +30,8 @@ namespace edh
 			~Game();
 
 			void addPlayer(const std::shared_ptr<Player>& x);
+			void insertPlayer(size_t index, const std::shared_ptr<Player>& x);
+			void removePlayer(const std::shared_ptr<Player>& x);
 			std::vector<std::shared_ptr<Player>> getPlayers() const;
 
 			void addRound(const std::shared_ptr<Round>& x);

@@ -9,11 +9,13 @@ target_sources(${PROJECT_NAME} PRIVATE
 	ComboBoxTurnActionType.h
 	DelegatePlayer.h
 	DelegateTurnActionType.h
+	DialogPlayerConfiguration.h
 	Export.h
 	GroupBoxGroup.h
 	GroupBoxPlayer.h
 	TreeWidgetRounds.h
 	WidgetPlayers.h
+	WidgetPlayerTable.h
 )
 
 target_sources(${PROJECT_NAME} PRIVATE
@@ -21,10 +23,12 @@ target_sources(${PROJECT_NAME} PRIVATE
 	ComboBoxTurnActionType.cpp
 	DelegatePlayer.cpp
 	DelegateTurnActionType.cpp
+	DialogPlayerConfiguration.cpp
 	GroupBoxGroup.cpp
 	GroupBoxPlayer.cpp
 	TreeWidgetRounds.cpp
 	WidgetPlayers.cpp
+	WidgetPlayerTable.cpp
 )
 
 

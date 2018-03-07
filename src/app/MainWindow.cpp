@@ -6,13 +6,15 @@
 #include <core/PlayerTurn.h>
 #include <core/Round.h>
 #include <core/TurnAction.h>
+#include <qt/DialogPlayerConfiguration.h>
 #include <qt/TreeWidgetRounds.h>
 #include <qt/WidgetPlayers.h>
+#include <QtCore/QDateTime>
 #include <QtCore/QTimer>
 #include <QtWidgets/QBoxLayout>
 #include <QtWidgets/QLabel>
+#include <QtWidgets/QMenuBar>
 #include <QtWidgets/QStatusBar>
-#include <QtCore/QDateTime>
 
 using namespace edh;
 using namespace edh::core;
@@ -41,8 +43,11 @@ struct MainWindow::Impl
 	}
 
 	std::shared_ptr<Game> game{std::make_shared<Game>()};
-	std::chrono::high_resolution_clock::time_point time{std::chrono::high_resolution_clock::now()};
 	QTimer timer;
+
+	DialogPlayerConfiguration* dlgPlayerConfig{nullptr};
+
+	std::chrono::high_resolution_clock::time_point time{std::chrono::high_resolution_clock::now()};
 };
 
 MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent)
@@ -87,8 +92,17 @@ MainWindow::~MainWindow()
 
 void MainWindow::initializeMenuFile()
 {
+	this->menuBar()->addMenu("File");
 }
 
 void MainWindow::initializeMenuEdit()
 {
+	auto menuEdit = this->menuBar()->addMenu("Edit");
+	auto menuPreferences = menuEdit->addAction("Preferences");
+	this->connect(menuPreferences, &QAction::triggered, [this] {
+		auto dlgPlayerConfig = new DialogPlayerConfiguration();
+		dlgPlayerConfig->setGame(this->pimpl->game);
+		dlgPlayerConfig->setAttribute(Qt::WA_DeleteOnClose);
+		dlgPlayerConfig->show();
+	});
 }
