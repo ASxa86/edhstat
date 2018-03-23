@@ -13,9 +13,10 @@ target_sources(${PROJECT_NAME} PRIVATE
 	Export.h
 	GroupBoxGroup.h
 	GroupBoxPlayer.h
+	PlayerTableModel.h
+	TableWidgetPlayer.h
 	TreeWidgetRounds.h
 	WidgetPlayers.h
-	WidgetPlayerTable.h
 )
 
 target_sources(${PROJECT_NAME} PRIVATE
@@ -26,9 +27,10 @@ target_sources(${PROJECT_NAME} PRIVATE
 	DialogPlayerConfiguration.cpp
 	GroupBoxGroup.cpp
 	GroupBoxPlayer.cpp
+	PlayerTableModel.cpp
+	TableWidgetPlayer.cpp
 	TreeWidgetRounds.cpp
 	WidgetPlayers.cpp
-	WidgetPlayerTable.cpp
 )
 
 

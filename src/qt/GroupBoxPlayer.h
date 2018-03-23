@@ -30,9 +30,10 @@ namespace edh
 
 		public:
 			GroupBoxPlayer(QWidget* parent = nullptr);
-			~GroupBoxPlayer();
+			virtual ~GroupBoxPlayer();
 
 			void setPlayer(const std::shared_ptr<edh::core::Player>&  x);
+			std::shared_ptr<edh::core::Player> getPlayer() const;
 
 			void setChecked(bool x);
 

@@ -1,7 +1,17 @@
 #pragma once
 
 #include <core/Export.h>
+#include <core/Pimpl.h>
+#include <functional>
 #include <string>
+
+namespace boost
+{
+	namespace signals2
+	{
+		class connection;
+	}
+}
 
 namespace edh
 {
@@ -16,7 +26,7 @@ namespace edh
 		///
 		///	\author Aaron Shelley
 		///
-		class EDHCORE_EXPORT Player
+		class EDHCORE_EXPORT Player : public std::enable_shared_from_this<Player>
 		{
 		public:
 			Player(const std::string& x = std::string());
@@ -34,11 +44,12 @@ namespace edh
 			void setExperienceCounters(int x);
 			int getExperienceCounters();
 
+			boost::signals2::connection addDirtyObserver(const std::function<void(std::shared_ptr<Player>)>& x);
+			void makeDirty();
+
 		private:
-			std::string name;
-			int lifeTotal;
-			int poisonCounters;
-			int experienceCounters;
+			struct Impl;
+			Pimpl<Impl> pimpl;
 		};
 	}
 }

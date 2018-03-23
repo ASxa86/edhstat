@@ -97,10 +97,10 @@ void MainWindow::initializeMenuFile()
 
 void MainWindow::initializeMenuEdit()
 {
-	auto menuEdit = this->menuBar()->addMenu("Edit");
-	auto menuPreferences = menuEdit->addAction("Preferences");
+	const auto menuEdit = this->menuBar()->addMenu("Edit");
+	const auto menuPreferences = menuEdit->addAction("Preferences");
 	this->connect(menuPreferences, &QAction::triggered, [this] {
-		auto dlgPlayerConfig = new DialogPlayerConfiguration();
+		const auto dlgPlayerConfig = new DialogPlayerConfiguration(this);
 		dlgPlayerConfig->setGame(this->pimpl->game);
 		dlgPlayerConfig->setAttribute(Qt::WA_DeleteOnClose);
 		dlgPlayerConfig->show();

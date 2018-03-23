@@ -31,6 +31,13 @@ include_directories(${CMAKE_SOURCE_DIR}/src)
 
 #####################################################
 #
+#	Find Boost
+#
+
+find_package(Boost)
+
+#####################################################
+#
 #	Find Qt5
 #
 

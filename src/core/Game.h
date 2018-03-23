@@ -1,14 +1,25 @@
 #pragma once
 
 #include <core/Export.h>
-#include <memory>
+#include <core/Pimpl.h>
 #include <chrono>
+#include <functional>
+#include <memory>
 #include <vector>
+
+namespace boost
+{
+	namespace signals2
+	{
+		class connection;
+	}
+}
 
 namespace edh
 {
 	namespace core
 	{
+		class connection;
 		class Player;
 		class Round;
 
@@ -32,6 +43,7 @@ namespace edh
 			void addPlayer(const std::shared_ptr<Player>& x);
 			void insertPlayer(size_t index, const std::shared_ptr<Player>& x);
 			void removePlayer(const std::shared_ptr<Player>& x);
+			int indexOfPlayer(const std::shared_ptr<Player>& x) const;
 			std::vector<std::shared_ptr<Player>> getPlayers() const;
 
 			void addRound(const std::shared_ptr<Round>& x);
@@ -40,10 +52,12 @@ namespace edh
 			void setTime(std::chrono::duration<double> x);
 			std::chrono::duration<double> getTime() const;
 
+			boost::signals2::connection addAddPlayerObserver(const std::function<void(std::shared_ptr<Player>)>& x);
+			boost::signals2::connection addRemovePlayerObserver(const std::function<void(std::shared_ptr<Player>)>& x);
+
 		private:
-			std::vector<std::shared_ptr<Player>> players;
-			std::vector<std::shared_ptr<Round>> rounds;
-			std::chrono::duration<double> time;
+			struct Impl;
+			Pimpl<Impl> pimpl;
 		};
 	}
 }

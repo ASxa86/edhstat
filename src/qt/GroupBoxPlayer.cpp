@@ -8,12 +8,14 @@
 #include <QtWidgets/QGridLayout>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QPushButton>
+#include <boost/signals2/signal.hpp>
 
 using namespace edh::core;
 using namespace edh::qt;
 
 struct GroupBoxPlayer::Impl
 {
+	boost::signals2::scoped_connection dirtyConnection;
 	QLabel* lblLifeTotal{nullptr};
 	QPointer<GroupBoxGroup> group{nullptr};
 	std::weak_ptr<Player> player{};
@@ -79,7 +81,17 @@ void GroupBoxPlayer::setPlayer(const std::shared_ptr<edh::core::Player>& x)
 	{
 		this->setTitle(QString::fromStdString(x->getName()));
 		this->pimpl->lblLifeTotal->setText(QString::number(x->getLifeTotal()));
+
+		this->pimpl->dirtyConnection = x->addDirtyObserver([this](std::shared_ptr<Player> player) {
+			this->setTitle(QString::fromStdString(player->getName()));
+			this->pimpl->lblLifeTotal->setText(QString::number(player->getLifeTotal()));
+		});
 	}
+}
+
+std::shared_ptr<edh::core::Player> GroupBoxPlayer::getPlayer() const
+{
+	return this->pimpl->player.lock();
 }
 
 void GroupBoxPlayer::setChecked(bool x)
@@ -126,7 +138,7 @@ void GroupBoxPlayer::mouseReleaseEvent(QMouseEvent* event)
 {
 	if(event->button() == Qt::MouseButton::LeftButton)
 	{
-		 this->setChecked(!this->pimpl->toggled);
+		this->setChecked(!this->pimpl->toggled);
 	}
 }
 

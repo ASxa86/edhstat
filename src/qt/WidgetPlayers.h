@@ -23,6 +23,8 @@ namespace edh
 
 			void setGame(const std::shared_ptr<edh::core::Game>& x);
 
+			void clear();
+
 		private:
 			struct Impl;
 			Pimpl<Impl> pimpl;
