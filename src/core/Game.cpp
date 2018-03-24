@@ -62,6 +62,16 @@ void Game::addRound(const std::shared_ptr<Round>& x)
 	this->pimpl->rounds.push_back(x);
 }
 
+std::shared_ptr<Round> Game::getCurrentRound() const
+{
+	if(this->pimpl->rounds.empty() == false)
+	{
+		return this->pimpl->rounds.back();
+	}
+
+	return nullptr;
+}
+
 std::vector<std::shared_ptr<Round>> Game::getRounds() const
 {
 	return this->pimpl->rounds;

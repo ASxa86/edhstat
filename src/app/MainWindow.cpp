@@ -78,9 +78,21 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent)
 	this->pimpl->timer.setInterval(std::chrono::milliseconds(100));
 
 	this->connect(&this->pimpl->timer, &QTimer::timeout, [this, lblTime] {
-		const auto time = std::chrono::high_resolution_clock::now() - this->pimpl->time;
-		this->pimpl->game->setTime(std::chrono::duration_cast<std::chrono::duration<double>>(time));
+		const auto time = std::chrono::duration_cast<std::chrono::duration<double>>(std::chrono::high_resolution_clock::now() - this->pimpl->time);
+		this->pimpl->game->setTime(time);
 		lblTime->setText(QDateTime::fromTime_t(this->pimpl->game->getTime().count()).toUTC().toString("HH:mm:ss"));
+
+		const auto currentRound = this->pimpl->game->getCurrentRound();
+
+		if(currentRound != nullptr)
+		{
+			const auto currentTurn = currentRound->getCurrentTurn();
+
+			if(currentTurn != nullptr)
+			{
+				currentTurn->setTime(time - currentTurn->getStartTime());
+			}
+		}
 	});
 
 	this->pimpl->timer.start();

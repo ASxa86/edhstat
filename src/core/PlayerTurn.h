@@ -37,12 +37,16 @@ namespace edh
 			void addTurnAction(const std::shared_ptr<TurnAction>& x);
 			std::vector<std::shared_ptr<TurnAction>> getTurnActions() const;
 
+			void setStartTime(std::chrono::duration<double> x);
+			std::chrono::duration<double> getStartTime() const;
+
 			void setTime(std::chrono::duration<double> x);
 			std::chrono::duration<double> getTime() const;
 
 		private:
 			std::vector<std::shared_ptr<TurnAction>> turnActions;
 			std::weak_ptr<Player> player;
+			std::chrono::duration<double> startTime;
 			std::chrono::duration<double> time;
 		};
 	}

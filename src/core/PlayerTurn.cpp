@@ -5,7 +5,7 @@
 
 using namespace edh::core;
 
-PlayerTurn::PlayerTurn(const std::shared_ptr<Player>& x) : player{x}
+PlayerTurn::PlayerTurn(const std::shared_ptr<Player>& x) : player{x}, startTime{}, time{}
 {
 }
 
@@ -26,6 +26,16 @@ void PlayerTurn::addTurnAction(const std::shared_ptr<TurnAction>& x)
 std::vector<std::shared_ptr<TurnAction>> PlayerTurn::getTurnActions() const
 {
 	return this->turnActions;
+}
+
+void PlayerTurn::setStartTime(std::chrono::duration<double> x)
+{
+	this->time = x;
+}
+
+std::chrono::duration<double> PlayerTurn::getStartTime() const
+{
+	return this->time;
 }
 
 void PlayerTurn::setTime(std::chrono::duration<double> x)

@@ -9,6 +9,7 @@
 #include <qt/DelegatePlayer.h>
 #include <qt/DelegateTurnActionType.h>
 #include <QtWidgets/QHeaderView>
+#include <QtCore/QDateTime>
 
 using namespace edh::core;
 using namespace edh::qt;
@@ -23,6 +24,7 @@ struct TreeWidgetRounds::Impl
 	enum Column : int
 	{
 		Name,
+		Time,
 		ActionCount,
 		ActionType,
 		Target,
@@ -51,12 +53,14 @@ TreeWidgetRounds::TreeWidgetRounds(QWidget* parent) : QTreeWidget(parent)
 	this->setSelectionBehavior(QAbstractItemView::SelectionBehavior::SelectItems);
 	this->setEditTriggers(QAbstractItemView::EditTrigger::AnyKeyPressed | QAbstractItemView::EditTrigger::DoubleClicked);
 	this->header()->setStretchLastSection(false);
+	this->header()->setSectionResizeMode(QHeaderView::ResizeMode::ResizeToContents);
 
 	this->setItemDelegateForColumn(Impl::Column::ActionType, new DelegateTurnActionType());
 	this->setItemDelegateForColumn(Impl::Column::Target, this->pimpl->dlgPlayer);
 
 	QStringList header;
 	header << "Round";
+	header << "Time";
 	header << "Count";
 	header << "Action";
 	header << "Target";
@@ -127,6 +131,7 @@ void TreeWidgetRounds::setGame(const std::shared_ptr<Game>& x)
 			{
 				auto turnItem = new QTreeWidgetItem(Impl::ItemType::Turn);
 				turnItem->setText(Impl::Column::Name, QString::fromStdString("Turn - " + turn->getPlayer()->getName()));
+				turnItem->setText(Impl::Column::Time, QDateTime::fromTime_t(turn->getTime().count()).toUTC().toString("mm:ss"));
 				std::weak_ptr<PlayerTurn> weakTurn = turn;
 				turnItem->setData(0, Qt::UserRole, QVariant::fromValue(weakTurn));
 

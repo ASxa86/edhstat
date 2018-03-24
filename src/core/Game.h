@@ -47,6 +47,7 @@ namespace edh
 			std::vector<std::shared_ptr<Player>> getPlayers() const;
 
 			void addRound(const std::shared_ptr<Round>& x);
+			std::shared_ptr<Round> getCurrentRound() const;
 			std::vector<std::shared_ptr<Round>> getRounds() const;
 
 			void setTime(std::chrono::duration<double> x);
