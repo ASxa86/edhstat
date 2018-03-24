@@ -1,13 +1,24 @@
 #pragma once
 
 #include <core/Export.h>
+#include <core/Pimpl.h>
 #include <memory>
+#include <functional>
 #include <vector>
+
+namespace boost
+{
+	namespace signals2
+	{
+		class connection;
+	}
+}
 
 namespace edh
 {
 	namespace core
 	{
+		class Game;
 		class PlayerTurn;
 
 		///
@@ -45,8 +56,14 @@ namespace edh
 			///
 			std::vector<std::shared_ptr<PlayerTurn>> getPlayerTurns() const;
 
+			void setGame(const std::shared_ptr<Game>& x);
+			std::shared_ptr<Game> getGame() const;
+
+			boost::signals2::connection addAddTurnObserver(const std::function<void(std::shared_ptr<PlayerTurn>)>& x);
+
 		private:
-			std::vector<std::shared_ptr<PlayerTurn>> playerTurns;
+			struct Impl;
+			Pimpl<Impl> pimpl;
 		};
 	}
 }

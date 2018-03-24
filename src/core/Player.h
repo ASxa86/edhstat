@@ -1,5 +1,6 @@
 #pragma once
 
+#include <core/Dirty.h>
 #include <core/Export.h>
 #include <core/Pimpl.h>
 #include <functional>
@@ -26,7 +27,7 @@ namespace edh
 		///
 		///	\author Aaron Shelley
 		///
-		class EDHCORE_EXPORT Player : public std::enable_shared_from_this<Player>
+		class EDHCORE_EXPORT Player : public Dirty<Player>
 		{
 		public:
 			Player(const std::string& x = std::string());
@@ -43,9 +44,6 @@ namespace edh
 
 			void setExperienceCounters(int x);
 			int getExperienceCounters();
-
-			boost::signals2::connection addDirtyObserver(const std::function<void(std::shared_ptr<Player>)>& x);
-			void makeDirty();
 
 		private:
 			struct Impl;

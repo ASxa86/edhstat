@@ -30,12 +30,12 @@ std::vector<std::shared_ptr<TurnAction>> PlayerTurn::getTurnActions() const
 
 void PlayerTurn::setStartTime(std::chrono::duration<double> x)
 {
-	this->time = x;
+	this->startTime = x;
 }
 
 std::chrono::duration<double> PlayerTurn::getStartTime() const
 {
-	return this->time;
+	return this->startTime;
 }
 
 void PlayerTurn::setTime(std::chrono::duration<double> x)

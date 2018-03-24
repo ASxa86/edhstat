@@ -38,6 +38,7 @@ struct TreeWidgetRounds::Impl
 		Action
 	};
 
+	std::vector<boost::signals2::scoped_connection> connections;
 	std::weak_ptr<Game> game;
 	DelegatePlayer* dlgPlayer{new DelegatePlayer()};
 };
@@ -114,50 +115,77 @@ void TreeWidgetRounds::setGame(const std::shared_ptr<Game>& x)
 	{
 		this->pimpl->dlgPlayer->setGame(x);
 
-		const auto rounds = x->getRounds();
+		x->addAddRoundObserver([this](auto round) {
+			auto roundItem = this->createItem(round);
+			this->addTopLevelItem(roundItem);
 
-		auto count = 0;
+			round->addAddTurnObserver([this, roundItem](auto turn) {
+				roundItem->addChild(this->createItem(turn));
+			});
+		});
+
+		const auto rounds = x->getRounds();
 
 		for(const auto& round : rounds)
 		{
-			auto roundItem = new QTreeWidgetItem(Impl::ItemType::Round);
-			roundItem->setText(Impl::Column::Name, "Round - " + QString::number(++count));
-			std::weak_ptr<Round> weakRound = round;
-			roundItem->setData(0, Qt::UserRole, QVariant::fromValue(weakRound));
-
-			const auto turns = round->getPlayerTurns();
-
-			for(const auto& turn : turns)
-			{
-				auto turnItem = new QTreeWidgetItem(Impl::ItemType::Turn);
-				turnItem->setText(Impl::Column::Name, QString::fromStdString("Turn - " + turn->getPlayer()->getName()));
-				turnItem->setText(Impl::Column::Time, QDateTime::fromTime_t(turn->getTime().count()).toUTC().toString("mm:ss"));
-				std::weak_ptr<PlayerTurn> weakTurn = turn;
-				turnItem->setData(0, Qt::UserRole, QVariant::fromValue(weakTurn));
-
-				const auto actions = turn->getTurnActions();
-
-				for(const auto& action : actions)
-				{
-					auto actionItem = new QTreeWidgetItem(Impl::ItemType::Action);
-					actionItem->setData(Impl::Column::ActionCount, Qt::DisplayRole, action->getCount());
-					actionItem->setData(Impl::Column::ActionType, Qt::UserRole, static_cast<int>(action->getType()));
-					actionItem->setData(Impl::Column::ActionType, Qt::DisplayRole, QString::fromStdString(ToString(action->getType())));
-
-					std::weak_ptr<Player> weakPlayer = action->getTarget();
-					actionItem->setData(Impl::Column::Target, Qt::UserRole, QVariant::fromValue(weakPlayer));
-					actionItem->setData(Impl::Column::Target, Qt::DisplayRole, QString::fromStdString(action->getTarget()->getName()));
-					std::weak_ptr<TurnAction> weakAction = action;
-					actionItem->setData(0, Qt::UserRole, QVariant::fromValue(weakAction));
-					actionItem->setFlags(actionItem->flags() | Qt::ItemIsEditable);
-
-					turnItem->addChild(actionItem);
-				}
-
-				roundItem->addChild(turnItem);
-			}
-
-			this->addTopLevelItem(roundItem);
+			this->addTopLevelItem(this->createItem(round));
 		}
 	}
+}
+
+QTreeWidgetItem* TreeWidgetRounds::createItem(const std::shared_ptr<edh::core::Round>& x)
+{
+	auto roundItem = new QTreeWidgetItem(Impl::ItemType::Round);
+	roundItem->setText(Impl::Column::Name, "Round - " + QString::number(this->pimpl->game.lock()->getRounds().size()));
+	std::weak_ptr<Round> weakRound = x;
+	roundItem->setData(0, Qt::UserRole, QVariant::fromValue(weakRound));
+
+	const auto turns = x->getPlayerTurns();
+
+	for(const auto& turn : turns)
+	{
+		roundItem->addChild(this->createItem(turn));
+	}
+
+	return roundItem;
+}
+
+QTreeWidgetItem* TreeWidgetRounds::createItem(const std::shared_ptr<edh::core::PlayerTurn>& x)
+{
+	auto turnItem = new QTreeWidgetItem(Impl::ItemType::Turn);
+	turnItem->setText(Impl::Column::Name, QString::fromStdString("Turn - " + x->getPlayer()->getName()));
+	turnItem->setText(Impl::Column::Time, QDateTime::fromTime_t(x->getTime().count()).toUTC().toString("mm:ss"));
+	this->pimpl->connections.push_back(x->addDirtyObserver([turnItem](auto turn) {
+		turnItem->setText(Impl::Column::Time, QDateTime::fromTime_t(turn->getTime().count()).toUTC().toString("mm:ss"));
+	}));
+
+
+	std::weak_ptr<PlayerTurn> weakTurn = x;
+	turnItem->setData(0, Qt::UserRole, QVariant::fromValue(weakTurn));
+
+	const auto actions = x->getTurnActions();
+
+	for(const auto& action : actions)
+	{
+		turnItem->addChild(this->createItem(action));
+	}
+
+	return turnItem;
+}
+
+QTreeWidgetItem* TreeWidgetRounds::createItem(const std::shared_ptr<edh::core::TurnAction>& x)
+{
+	auto actionItem = new QTreeWidgetItem(Impl::ItemType::Action);
+	actionItem->setData(Impl::Column::ActionCount, Qt::DisplayRole, x->getCount());
+	actionItem->setData(Impl::Column::ActionType, Qt::UserRole, static_cast<int>(x->getType()));
+	actionItem->setData(Impl::Column::ActionType, Qt::DisplayRole, QString::fromStdString(ToString(x->getType())));
+
+	std::weak_ptr<Player> weakPlayer = x->getTarget();
+	actionItem->setData(Impl::Column::Target, Qt::UserRole, QVariant::fromValue(weakPlayer));
+	actionItem->setData(Impl::Column::Target, Qt::DisplayRole, QString::fromStdString(x->getTarget()->getName()));
+	std::weak_ptr<TurnAction> weakAction = x;
+	actionItem->setData(0, Qt::UserRole, QVariant::fromValue(weakAction));
+	actionItem->setFlags(actionItem->flags() | Qt::ItemIsEditable);
+
+	return actionItem;
 }

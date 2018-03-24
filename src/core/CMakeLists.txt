@@ -6,9 +6,9 @@ target_compile_definitions(${PROJECT_NAME} PRIVATE -D${PROJECT_NAME}_Export)
 target_include_directories(${PROJECT_NAME} PUBLIC ${Boost_INCLUDE_DIR})
 
 target_sources(${PROJECT_NAME} PRIVATE
+	Dirty.h
 	Export.h
 	Game.h
-	Object.h
 	Pimpl.h
 	PimplImpl.h
 	Player.h
@@ -19,7 +19,6 @@ target_sources(${PROJECT_NAME} PRIVATE
 
 target_sources(${PROJECT_NAME} PRIVATE
 	Game.cpp
-	Object.cpp
 	Player.cpp
 	PlayerTurn.cpp
 	Round.cpp

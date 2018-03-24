@@ -1,4 +1,5 @@
 #include <core/Game.h>
+
 #include <core/PimplImpl.h>
 #include <core/Player.h>
 #include <core/PlayerTurn.h>
@@ -12,6 +13,7 @@ struct Game::Impl
 {
 	boost::signals2::signal<void(std::shared_ptr<Player>)> addPlayerObservers;
 	boost::signals2::signal<void(std::shared_ptr<Player>)> removePlayerObservers;
+	boost::signals2::signal<void(std::shared_ptr<Round>)> addRoundObservers;
 	std::vector<std::shared_ptr<Player>> players{};
 	std::vector<std::shared_ptr<Round>> rounds{};
 	std::chrono::duration<double> time{};
@@ -60,6 +62,8 @@ std::vector<std::shared_ptr<Player>> Game::getPlayers() const
 void Game::addRound(const std::shared_ptr<Round>& x)
 {
 	this->pimpl->rounds.push_back(x);
+	x->setGame(this->shared_from_this());
+	this->pimpl->addRoundObservers(x);
 }
 
 std::shared_ptr<Round> Game::getCurrentRound() const
@@ -95,4 +99,9 @@ boost::signals2::connection Game::addAddPlayerObserver(const std::function<void(
 boost::signals2::connection Game::addRemovePlayerObserver(const std::function<void(std::shared_ptr<Player>)>& x)
 {
 	return this->pimpl->removePlayerObservers.connect(x);
+}
+
+boost::signals2::connection Game::addAddRoundObserver(const std::function<void(std::shared_ptr<Round>)>& x)
+{
+	return this->pimpl->addRoundObservers.connect(x);
 }

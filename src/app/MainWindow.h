@@ -17,6 +17,8 @@ namespace edh
 		void initializeMenuFile();
 		void initializeMenuEdit();
 
+		void btnNextTurnClicked();
+
 	private:
 		struct Impl;
 		Pimpl<Impl> pimpl;

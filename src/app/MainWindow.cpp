@@ -14,6 +14,7 @@
 #include <QtWidgets/QBoxLayout>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QMenuBar>
+#include <QtWidgets/QPushButton>
 #include <QtWidgets/QStatusBar>
 
 using namespace edh;
@@ -63,6 +64,12 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent)
 	wPlayers->setGame(this->pimpl->game);
 	layout->addWidget(wPlayers);
 
+	auto turnLayout = new QHBoxLayout();
+	auto btnNextTurn = new QPushButton("Next Turn");
+	turnLayout->addWidget(btnNextTurn);
+	turnLayout->addSpacerItem(new QSpacerItem(0, 0, QSizePolicy::Expanding));
+	layout->addLayout(turnLayout);
+
 	auto wRounds = new TreeWidgetRounds();
 	wRounds->setGame(this->pimpl->game);
 	layout->addWidget(wRounds);
@@ -91,9 +98,12 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent)
 			if(currentTurn != nullptr)
 			{
 				currentTurn->setTime(time - currentTurn->getStartTime());
+				currentTurn->makeDirty();
 			}
 		}
 	});
+
+	this->connect(btnNextTurn, &QPushButton::clicked, this, &MainWindow::btnNextTurnClicked);
 
 	this->pimpl->timer.start();
 }
@@ -117,4 +127,36 @@ void MainWindow::initializeMenuEdit()
 		dlgPlayerConfig->setAttribute(Qt::WA_DeleteOnClose);
 		dlgPlayerConfig->show();
 	});
+}
+
+void MainWindow::btnNextTurnClicked()
+{
+	const auto players = this->pimpl->game->getPlayers();
+
+	auto currentRound = this->pimpl->game->getCurrentRound();
+
+	if(currentRound != nullptr)
+	{
+		const auto currentTurn = currentRound->getCurrentTurn();
+
+		if(currentTurn != nullptr)
+		{
+			const auto currentPlayer = currentTurn->getPlayer();
+			auto idx = this->pimpl->game->indexOfPlayer(currentPlayer);
+			idx++;
+
+			// Check if it is the start of a new round.
+			if(idx > static_cast<int>(players.size()) - 1)
+			{
+				idx = 0;
+
+				currentRound = std::make_shared<Round>();
+				this->pimpl->game->addRound(currentRound);
+			}
+
+			const auto nextPlayer = players[idx];
+			const auto nextTurn = std::make_shared<PlayerTurn>(nextPlayer);
+			currentRound->addPlayerTurn(nextTurn);
+		}
+	}
 }

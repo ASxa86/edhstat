@@ -1,6 +1,7 @@
 #pragma once
 
 #include <core/Export.h>
+#include <core/Dirty.h>
 #include <chrono>
 #include <functional>
 #include <memory>
@@ -22,7 +23,7 @@ namespace edh
 		///
 		///	\author Aaron Shelley
 		///
-		class EDHCORE_EXPORT PlayerTurn
+		class EDHCORE_EXPORT PlayerTurn : public Dirty<PlayerTurn>
 		{
 		public:
 			PlayerTurn() = delete;

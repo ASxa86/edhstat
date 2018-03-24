@@ -65,13 +65,3 @@ int Player::getExperienceCounters()
 {
 	return this->pimpl->experienceCounters;
 }
-
-boost::signals2::connection Player::addDirtyObserver(const std::function<void(std::shared_ptr<Player>)>& x)
-{
-	return this->pimpl->dirtyObservers.connect(x);
-}
-
-void Player::makeDirty()
-{
-	this->pimpl->dirtyObservers(this->shared_from_this());
-}

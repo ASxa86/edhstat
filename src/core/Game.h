@@ -1,6 +1,7 @@
 #pragma once
 
 #include <core/Export.h>
+#include <core/Dirty.h>
 #include <core/Pimpl.h>
 #include <chrono>
 #include <functional>
@@ -34,7 +35,7 @@ namespace edh
 		///
 		///	\authro Aaron Shelley
 		///
-		class EDHCORE_EXPORT Game
+		class EDHCORE_EXPORT Game : public Dirty<Game>
 		{
 		public:
 			Game();
@@ -55,6 +56,8 @@ namespace edh
 
 			boost::signals2::connection addAddPlayerObserver(const std::function<void(std::shared_ptr<Player>)>& x);
 			boost::signals2::connection addRemovePlayerObserver(const std::function<void(std::shared_ptr<Player>)>& x);
+
+			boost::signals2::connection addAddRoundObserver(const std::function<void(std::shared_ptr<Round>)>& x);
 
 		private:
 			struct Impl;

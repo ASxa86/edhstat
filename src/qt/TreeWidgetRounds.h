@@ -9,6 +9,9 @@ namespace edh
 	namespace core
 	{
 		class Game;
+		class PlayerTurn;
+		class Round;
+		class TurnAction;
 	}
 
 	namespace qt
@@ -31,6 +34,11 @@ namespace edh
 			~TreeWidgetRounds();
 
 			void setGame(const std::shared_ptr<edh::core::Game>& x);
+
+		protected:
+			QTreeWidgetItem* createItem(const std::shared_ptr<edh::core::Round>& x);
+			QTreeWidgetItem* createItem(const std::shared_ptr<edh::core::PlayerTurn>& x);
+			QTreeWidgetItem* createItem(const std::shared_ptr<edh::core::TurnAction>& x);
 
 		private:
 			struct Impl;
