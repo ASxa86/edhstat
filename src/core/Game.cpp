@@ -81,6 +81,24 @@ std::vector<std::shared_ptr<Round>> Game::getRounds() const
 	return this->pimpl->rounds;
 }
 
+std::vector<std::shared_ptr<PlayerTurn>> Game::getTurns(const std::shared_ptr<Player>& x)
+{
+	std::vector<std::shared_ptr<PlayerTurn>> v;
+
+	for(const auto& round : this->pimpl->rounds)
+	{
+		const auto turns = round->getPlayerTurns();
+		const auto foundIt = std::find_if(std::begin(turns), std::end(turns), [x](const auto& turn) { return turn->getPlayer() == x; });
+
+		if(foundIt != std::end(turns))
+		{
+			v.push_back(*foundIt);
+		}
+	}
+
+	return v;
+}
+
 void Game::setTime(std::chrono::duration<double> x)
 {
 	this->pimpl->time = x;

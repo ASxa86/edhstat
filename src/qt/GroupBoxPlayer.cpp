@@ -3,6 +3,7 @@
 #include <core/PimplImpl.h>
 #include <core/Player.h>
 #include <qt/GroupBoxGroup.h>
+#include <QtCore/QDateTime>
 #include <QtCore/QPointer>
 #include <QtGui/QMouseEvent>
 #include <QtWidgets/QGridLayout>
@@ -79,11 +80,17 @@ void GroupBoxPlayer::setPlayer(const std::shared_ptr<edh::core::Player>& x)
 
 	if(x != nullptr)
 	{
-		this->setTitle(QString::fromStdString(x->getName()));
+		const auto playerName = QString::fromStdString(x->getName());
+		const auto turnTime = QDateTime::fromTime_t(x->getTurnTime().count()).toUTC().toString("mm:ss");
+		
+		this->setTitle(playerName + " - " + turnTime);
 		this->pimpl->lblLifeTotal->setText(QString::number(x->getLifeTotal()));
 
 		this->pimpl->dirtyConnection = x->addDirtyObserver([this](std::shared_ptr<Player> player) {
-			this->setTitle(QString::fromStdString(player->getName()));
+			const auto playerName = QString::fromStdString(player->getName());
+			const auto turnTime = QDateTime::fromTime_t(player->getTurnTime().count()).toUTC().toString("mm:ss");
+
+			this->setTitle(playerName + " - " + turnTime);
 			this->pimpl->lblLifeTotal->setText(QString::number(player->getLifeTotal()));
 		});
 	}

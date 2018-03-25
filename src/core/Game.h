@@ -1,7 +1,7 @@
 #pragma once
 
-#include <core/Export.h>
 #include <core/Dirty.h>
+#include <core/Export.h>
 #include <core/Pimpl.h>
 #include <chrono>
 #include <functional>
@@ -22,6 +22,7 @@ namespace edh
 	{
 		class connection;
 		class Player;
+		class PlayerTurn;
 		class Round;
 
 		///
@@ -50,6 +51,7 @@ namespace edh
 			void addRound(const std::shared_ptr<Round>& x);
 			std::shared_ptr<Round> getCurrentRound() const;
 			std::vector<std::shared_ptr<Round>> getRounds() const;
+			std::vector<std::shared_ptr<PlayerTurn>> getTurns(const std::shared_ptr<Player>& x);
 
 			void setTime(std::chrono::duration<double> x);
 			std::chrono::duration<double> getTime() const;

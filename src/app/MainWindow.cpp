@@ -99,6 +99,23 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent)
 			{
 				currentTurn->setTime(time - currentTurn->getStartTime());
 				currentTurn->makeDirty();
+
+				const auto currentPlayer = currentTurn->getPlayer();
+
+				if(currentPlayer != nullptr)
+				{
+					std::chrono::duration<double> playerTime{};
+
+					const auto turns = this->pimpl->game->getTurns(currentPlayer);
+
+					for(const auto& turn : turns)
+					{
+						playerTime += turn->getTime();
+					}
+
+					currentPlayer->setTurnTime(playerTime);
+					currentPlayer->makeDirty();
+				}
 			}
 		}
 	});

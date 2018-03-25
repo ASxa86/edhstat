@@ -3,16 +3,9 @@
 #include <core/Dirty.h>
 #include <core/Export.h>
 #include <core/Pimpl.h>
+#include <chrono>
 #include <functional>
 #include <string>
-
-namespace boost
-{
-	namespace signals2
-	{
-		class connection;
-	}
-}
 
 namespace edh
 {
@@ -44,6 +37,9 @@ namespace edh
 
 			void setExperienceCounters(int x);
 			int getExperienceCounters();
+
+			void setTurnTime(std::chrono::duration<double> x);
+			std::chrono::duration<double> getTurnTime() const;
 
 		private:
 			struct Impl;

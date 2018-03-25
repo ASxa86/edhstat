@@ -13,6 +13,7 @@ struct Player::Impl
 
 	boost::signals2::signal<void(std::shared_ptr<Player>)> dirtyObservers{};
 	std::string name{};
+	std::chrono::duration<double> turnTime{0.0};
 	int lifeTotal{40};
 	int poisonCounters{0};
 	int experienceCounters{0};
@@ -64,4 +65,14 @@ void Player::setExperienceCounters(int x)
 int Player::getExperienceCounters()
 {
 	return this->pimpl->experienceCounters;
+}
+
+void Player::setTurnTime(std::chrono::duration<double> x)
+{
+	this->pimpl->turnTime = x;
+}
+
+std::chrono::duration<double> Player::getTurnTime() const
+{
+	return this->pimpl->turnTime;
 }
